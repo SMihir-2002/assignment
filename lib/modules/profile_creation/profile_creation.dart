@@ -1,6 +1,6 @@
 import 'package:assignment/constants/text_styles.dart';
 import 'package:assignment/firestore_database/user_profile.dart';
-import 'package:assignment/modules/login/widgets/primary_button.dart';
+import 'package:assignment/modules/auth/widgets/primary_button.dart';
 import 'package:assignment/modules/profile_creation/widgets/profile_text_field.dart';
 import 'package:assignment/modules/widgets/snackbar.dart';
 import 'package:flutter/material.dart';

@@ -1,13 +1,14 @@
+
 import 'package:assignment/constants/colors.dart';
 import 'package:assignment/constants/text_styles.dart';
-import 'package:assignment/modules/login/login_screen.dart';
-import 'package:assignment/modules/login/widgets/primary_button.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:assignment/modules/home/widgets/profile_completion_widget.dart';
+import 'package:assignment/modules/home/widgets/recent_applications.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -20,140 +21,92 @@ class HomeScreen extends StatelessWidget {
 
   RxBool isLoading = true.obs;
 
-  getData() async {
-    isLoading.value = true;
-    try {
-      GetStorage _storage = GetStorage();
-      Map userDetais = _storage.read("UserDetails");
-      name = userDetais["name"];
-      email = userDetais["email"];
-      location = userDetais["location"];
-      contact = userDetais["mobile_number"];
-      joinedAt = userDetais["created_at"].toString();
-    } catch (e) {
-      print(e);
-    }
-    isLoading.value = false;
-  }
-
   @override
   Widget build(BuildContext context) {
-    getData();
-    return Scaffold(
-      body: SafeArea(
-          child: Obx(
-        () => isLoading.value
-            ? Center(
-                child: SpinKitChasingDots(
-                  color: titleFontColor,
-                ),
-              )
-            : Container(
-                padding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
+      children: [
+        const ACompleteProfile(),
+        SizedBox(
+          height: 8.h,
+        ),
+        const RecentApplications(),
+        SizedBox(
+          height: 8.h,
+        ),
+        Text(
+            "Opportunities For You",
+            style: fSubHeading2,
+          ),
+          SizedBox(
+            height: 8.h,
+          ),
+        ...List.generate(25, (index) => Padding(
+            padding: EdgeInsets.symmetric(vertical: 6.h ),
+          child: Material(
+            shadowColor: Colors.blueGrey.withOpacity(0.4),
+                      elevation: 4,
+                      borderRadius: BorderRadius.circular(14.r),
+            child: Container(
+              width: double.infinity,
+              height: 140.h,
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(14.r),
+              border: Border.all(color: Colors.grey.withOpacity(0.3))
+              ),
+            
+              padding: EdgeInsets.symmetric(vertical: 14.h, horizontal: 16.w ),
+              child: Container(
+                child: Row(
                   children: [
-                    CircleAvatar(
-                      radius: 30.h,
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.blue,
-                        size: 30.h,
-                      ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                                padding: EdgeInsets.symmetric(vertical: 3.h),
+                                height: 70.h,
+                                width: 70.h,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4.r),
+                                    border: Border.all(
+                                        color: Colors.grey.withOpacity(0.3))),
+                                child: Image.asset(
+                                  "assets/images/appleLogo.png",
+                                ),
+                              ),
+                               Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 4.h, horizontal: 12.w),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(100),
+                                border: Border.all(color: Colors.blue)),
+                            child: Text(
+                              "Quick Apply",
+                              style: fNote.copyWith(
+                                  fontSize: 10.h, color: Colors.blue),
+                            ),
+                          )
+                      ],
                     ),
-                    SizedBox(
-                      height: 10.h,
+                    SizedBox(width: 6.w,),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("SDE-1", style: fSubHeading2.copyWith(fontSize: 14.sp),),
+                        Text("Apple Inc", style: fSubHeading3.copyWith(fontSize: 12.sp),),
+                        Text("Location :- California USA", style: fNote.copyWith(fontSize: 10.sp),),
+                        Text("CTC:- 5.8LPA - 10LPA ", style: fNote.copyWith(fontSize: 10.sp, color: titleFontColor),),
+                        Flexible(child: Text("Skills Required: - Java, SpringBoot , Flutter, React ....",style: fNote.copyWith(fontSize: 10.sp,), overflow: TextOverflow.ellipsis,)), 
+                        SizedBox()
+                      ],
                     ),
-                    Text(
-                      "User Name :-",
-                      style: fSubHeading2,
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                    ),
-                    Text(
-                      name,
-                      style: fSubHeading3,
-                    ),
-                    Partition(),
-                    Text(
-                      "Email :-",
-                      style: fSubHeading2,
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                    ),
-                    Text(
-                      email,
-                      style: fSubHeading3,
-                    ),
-                    Partition(),
-                    Text(
-                      "Mobile :-",
-                      style: fSubHeading2,
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                    ),
-                    Text(
-                      contact,
-                      style: fSubHeading3,
-                    ),
-                    Partition(),
-                    Text(
-                      "Current Location:-",
-                      style: fSubHeading2,
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                    ),
-                    Text(
-                      location,
-                      style: fSubHeading3,
-                    ),
-                    Partition(),
-                    Text(
-                      "Joined At",
-                      style: fSubHeading2,
-                    ),
-                    SizedBox(
-                      height: 6.h,
-                    ),
-                    Text(
-                      joinedAt,
-                      style: fSubHeading3,
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    Center(
-                      child: PrimaryButton(
-                          onPressed: () {
-                            FirebaseAuth.instance.signOut().whenComplete(() {
-                              GetStorage().erase();
-                              Get.offAll(() => LoginScreen());
-                            });
-                          },
-                          text: "      Logout      "),
-                    )
+
                   ],
                 ),
               ),
-      )),
-    );
-  }
-}
-
-class Partition extends StatelessWidget {
-  const Partition({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.h),
-      height: 2.h,
-      width: double.infinity,
-      color: Colors.grey,
+            ),
+          ),
+        ))
+      ],
     );
   }
 }

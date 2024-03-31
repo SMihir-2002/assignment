@@ -17,4 +17,7 @@ TextStyle FTextField1 = GoogleFonts.outfit(fontSize: 16.h, fontWeight:FontWeight
 TextStyle fSubHeading2 = GoogleFonts.outfit(
     fontSize: 18.h, fontWeight: FontWeight.w500, color: primaryFontColor);
 TextStyle fSubHeading3 = GoogleFonts.outfit(
-    fontSize: 16.h, fontWeight: FontWeight.w500, color: primaryFontColor);
+    fontSize: 14.h, fontWeight: FontWeight.w500, color: primaryFontColor);
+
+TextStyle fNavBar = GoogleFonts.outfit(fontSize: 10.h, fontWeight:FontWeight.w500, color:Colors.grey);
+TextStyle fNavBarSelected = GoogleFonts.outfit(fontSize: 12.h, fontWeight:FontWeight.w500, color:Colors.white);
